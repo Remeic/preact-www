@@ -1,21 +1,17 @@
-import './lib/polyfills';
-import './style';
+import './style/index.less';
+import './analytics';
 import './pwa';
-import { h, render } from 'preact';
+import App from './components/app';
 import * as preact from 'preact';
+import * as hooks from 'preact/hooks';
+
+export default App;
 
 // allows users to play with preact in the browser developer console
-global.preact = preact
+global.preact = { ...preact, ...hooks };
 
-let root = document.getElementById('app');
-function init() {
-	let App = require('./components/app').default;
-	root = render(<App />, document.body, root);
+// Install JSDOM's DOMParser globally. Used by <Markup> component's parser.
+if (PRERENDER) {
+	const jsdom = __non_webpack_require__('jsdom');
+	global.DOMParser = new jsdom.JSDOM().window.DOMParser;
 }
-
-if (process.env.NODE_ENV==='development' && module.hot) {
-	require('preact/devtools');
-	module.hot.accept('./components/app', () => requestAnimationFrame(init));
-}
-
-init();

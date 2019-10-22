@@ -1,31 +1,44 @@
 import { h, Component } from 'preact';
-import { Provider } from '../lib/store';
+import { Provider } from 'unistore/preact';
 import createStore from '../store';
 import Routes from './routes';
 import Header from './header';
-import Footer from './footer';
-
-/*global ga*/
-
-let store = createStore();
+import { storeCtx } from './store-adapter';
+import { getCurrentDocVersion } from '../lib/docs';
 
 export default class App extends Component {
-	handleUrlChange({ url }) {
-		let prev = store.getState().url || '/';
-		if (url!==prev && typeof ga==='function') {
-			store.setState({ url });
-			ga('send', 'pageview', url);
-		}
-	}
+	store = createStore({
+		url: this.props.url || location.pathname,
+		lang: 'en',
+		docVersion: getCurrentDocVersion(location.pathname),
+		toc: null
+	});
 
-	render({ url }) {
+	handleUrlChange = ({ url }) => {
+		let prev = this.store.getState().url || '/';
+		if (url !== prev) {
+			this.store.setState({
+				...this.store.getState(),
+				toc: null,
+				url,
+				docVersion: getCurrentDocVersion(url)
+			});
+			if (typeof ga === 'function') {
+				ga('send', 'pageview', url);
+			}
+		}
+	};
+
+	render() {
+		const { url } = this.store.getState();
 		return (
-			<Provider store={store}>
-				<div id="app">
-					<Header />
-					<Routes url={url} onChange={this.handleUrlChange} />
-					<Footer />
-				</div>
+			<Provider store={this.store}>
+				<storeCtx.Provider value={this.store}>
+					<div id="app">
+						<Header url={url} />
+						<Routes url={url} onChange={this.handleUrlChange} />
+					</div>
+				</storeCtx.Provider>
 			</Provider>
 		);
 	}

@@ -1,52 +1,129 @@
-@import (css, inline) '~progress-spinner';
 @import './helpers';
+@import './reset';
 @import './markdown';
 @import './gh-btn';
 @import './list-view';
+@import './prism.css';
+@import './variables';
 
-html, body {
-	height: 100%;
-	width: 100%;
+// The following two classes may seem redundant, but they allow us to overwrite
+// the scheme defined by the browser if the user wants to.
+html.light {
+	--color-page-bg: white;
+	--color-text: #444;
+	--color-home-btn: #673ab8;
+	--color-heading: black;
+	--color-link: #673ab8;
+	--color-hr: #f8f8f8;
+	--color-quote-bg: #ebf6ff;
+	--color-quote-border: #5aa8ff;
+	--color-quote-text: #444;
+	--color-warn-bg: #ffee5b;
+	--color-table-border: #ccc;
+	--color-table-even-bg: white;
+	--color-table-odd-bg: #f8f8f8;
+	--color-table-border: #ccc;
+	--color-code-inline-bg: #f8f8f8;
+	--color-code-inline-border: #eaeaea;
+	--color-code-bg: #252931;
+	--color-repl-bg: #666;
+	--color-repl-hover: #999;
+	--color-sidebar-divider: #eee;
+	--color-sidebar-bg: #fafafa;
+	--color-sidebar-bg-active: #f3f3f3;
+	--color-sidebar-link-active: #673ab8;
+	--color-sidebar-link: #555;
+	--color-footer-lang-divider: #aaa;
+	--color-footer-lang: #673ab8;
+	--color-footer-link: #673ab8;
+	--color-footer-text: #555;
+	--color-footer-bg: #f2f2f2;
+	--color-footer-border: #ddd;
+}
+
+// Same for this one
+html.dark {
+	--color-page-bg: #242424;
+	--color-text: #b0b0b0;
+	--color-heading: #c5c5c5;
+	--color-link: #ae80ff;
+	--color-home-btn: #673ab8;
+	--color-hr: #444;
+	--color-quote-bg: #29475f;
+	--color-quote-border: #3f6b9c;
+	--color-quote-text: #c5c5c5;
+	--color-warn-bg: #f2d900;
+	--color-table-border: #575757;
+	--color-table-even-bg: #242424;
+	--color-table-odd-bg: #2f2f2f;
+	--color-code-inline-bg: #2b313c;
+	--color-code-inline-border: #5e5e5e;
+	--color-code-bg: #252931;
+	--color-repl-bg: #414141;
+	--color-repl-hover: #555;
+	--color-sidebar-divider: #4f4f4f;
+	--color-sidebar-bg: #171717;
+	--color-sidebar-bg-active: #242424;
+	--color-sidebar-link-active: #ae80ff;
+	--color-sidebar-link: #b0b0b0;
+	--color-footer-lang-divider: #444;
+	--color-footer-lang: #ae80ff;
+	--color-footer-link: #ae80ff;
+	--color-footer-text: #999;
+	--color-footer-bg: #1b1b1b;
+	--color-footer-border: #1b1b1b;
+}
+
+html,
+body {
 	padding: 0;
 	margin: 0;
-	background: #FFF;
-	font: 15px/1.8 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	background: var(--color-page-bg);
+	color: var(--color-text);
+	font: 16px/1.65 system-ui, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+		'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	font-weight: 400;
-	color: #444;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
+body {
+	// Sets overflowing background color when scrolled past the page in
+	// MacOS or in iOS.
+	background: @color-brand;
+}
+
 * {
 	box-sizing: border-box;
-	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 a {
-	color: #2f6daa;
 	text-decoration: none;
-
-	&:hover, &:active, &:focus {
-		text-decoration: underline;
-		color: darken(#2f6daa, 15%);
-	}
 }
 
 a.white {
-	color: #FFF;
+	color: #fff;
 }
 
-pre, code {
-	font-family: 'source-code-pro', Menlo, Consolas, Monaco, 'Andale Mono', 'Courier New', monospace;
-	font-size: 13px;
+h1,
+h2 {
+	color: var(--color-heading);
+}
+
+pre,
+code {
+	font-family: 'source-code-pro', Menlo, Consolas, Monaco, 'Andale Mono',
+		'Courier New', monospace;
+	font-size: 0.9rem;
 }
 
 pre.highlight {
 	position: relative;
 	border: none;
-	margin-bottom: 40px;
-	padding: 0 !important;
+	margin-bottom: 2.5rem;
 	line-height: 1.5;
+	padding: 20px;
 
 	a.repl-link {
 		position: absolute;
@@ -54,20 +131,16 @@ pre.highlight {
 		top: 0;
 		padding: 3px 7px;
 		margin: 0;
-		color: #FFF;
+		color: #fff;
 		border: none;
-		background: #666;
+		background: var(--color-repl-bg);
 		border-radius: 0 0 0 3px;
 		text-align: center;
 		text-decoration: none;
-		&:hover {
-			background: #999;
-		}
-	}
 
-	& > code {
-		padding: 20px;
-		background: #2b313c;
+		&:hover {
+			background: var(--color-repl-hover);
+		}
 	}
 }
 
@@ -76,16 +149,52 @@ content-region {
 }
 
 #app {
-	background: #FFF;
-	height: 100%;
+	min-height: 100%;
+	background: var(--color-page-bg);
 
 	& > main {
 		min-height: 95%;
-		padding-top: 56px;
+		padding-top: @header-height;
+		display: block; // Fix IE11 layout
 	}
 }
 
-
+progress-bar {
+	position: fixed;
+	left: 0;
+	top: -5px;
+	width: 100%;
+	height: 3px;
+	background: fade(darken(#f2777a, 10%), 50%);
+	transform: translateY(0);
+	transition: transform 1s ease, opacity 1s ease;
+	opacity: 0;
+	z-index: 1000;
+	&::after {
+		content: '';
+		display: block;
+		height: 100%;
+		width: 75%;
+		background: #f2777a;
+		transform: translateX(-100%);
+		will-change: transform;
+	}
+	&[showing] {
+		transform: translateY(5px);
+		opacity: 1;
+		&::after {
+			animation: fly 1s linear forwards infinite;
+		}
+	}
+}
+@keyframes fly {
+	0% {
+		transform: translateX(-100%);
+	}
+	100% {
+		transform: translateX(150%);
+	}
+}
 
 main .markup {
 	.home-top {
@@ -95,178 +204,204 @@ main .markup {
 		h1 {
 			font-size: 7.3vw;
 			text-align: center;
-			font-weight: 300;
+			font-weight: lighter;
 			letter-spacing: 0.02em;
 
 			@media (min-width: 1024px) {
-				font-size: 500%;
+				font-size: 400%;
 			}
 		}
 	}
 
-	@media (max-width:600px) {
-		.home-button-sep {
-			display: block;
-			height: 0;
-			margin-bottom: 1.3em;
-			overflow: hidden;
+	.intro-buttons {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		@media (min-width: 600px) {
+			flex-direction: row-reverse;
+			justify-content: center;
+			align-items: initial;
+		}
+
+		.home-button + .home-button {
+			margin-top: 1.3rem;
+
+			@media (min-width: 600px) {
+				margin-top: 0;
+			}
 		}
 	}
 
 	.home-button {
-		display: inline-block;
-		min-width: 12em;
-		padding: 7px 15px;
-		background: #EEE;
-		box-shadow: inset 0 .5px 0 rgba(255,255,255,0.3)
-					0 1px 4px rgba(0,0,0,0.5);
-		border: none;
-		text-shadow: 0 .5px 0 rgba(255,255,255,0.3);
-		border-radius: 4px;
-		color: #22262e;
-		font-weight: bold;
-		text-transform: uppercase;
-		font-size: 16px;
-		white-space: nowrap;
-
-		&:hover {
-			text-decoration: none;
-			background: #f2777a;
-		}
+		margin: 0 1rem;
 	}
 
-	.home-split {
-		padding: 0 10px;
-		max-width: 1280px;
-		overflow: hidden;
+	.home-demo {
+		padding: 20px;
+		background: #f8f8f8;
+		border: 2px solid #ddd;
 
-		h2 {
-			margin-top: 0;
-			font-weight: inherit;
+		label {
+			color: #444;
+			span:first-child {
+				display: block;
+			}
 		}
 
-		> div {
-			float: left;
-			box-sizing: border-box;
-			width: 40%;
+		input,
+		button {
+			margin: 0 5px 0 0.5re;
+			padding: 5px 10px;
+			border: 1px solid #673ab8;
+			border-radius: 3px;
+			font-size: 100%;
+		}
+		button {
+			background: #673ab8;
+			color: #fff;
+		}
+	}
+}
+
+.home-split {
+	padding: 0 10px;
+	margin-bottom: 2rem;
+	display: flex;
+	flex-direction: column;
+	max-width: @home-width !important; // TODO: Fix markup page styles
+
+	@media @sidebar-break {
+		padding: 0 10px;
+		flex-direction: row;
+	}
+
+	h2 {
+		font-weight: inherit;
+	}
+
+	> div {
+		float: left;
+		box-sizing: border-box;
+		width: 40%;
+
+		@media @sidebar-break {
 			padding: 10px;
 
 			&:first-child {
 				width: 60%;
 			}
 		}
-
-		@media (max-width: 840px) {
-			max-width: 600px;
-			margin: auto;
-
-			> div:last-child > h2 {
-				margin-bottom: 0;
-				font-size: 20px;
-				border-bottom: none;
-			}
-
-			pre {
-				margin: 10px 0;
-			}
-
-			> div {
-				float: none !important;
-				width: auto !important;
-			}
-		}
 	}
 
-	.home-demo {
-		padding: 20px;
-		background: #F8F8F8;
-		border: 2px solid #DDD;
+	@media (max-width: 900px) {
+		max-width: 600px;
+		margin: auto;
 
-		input, button {
-			margin: 0 5px 0 0;
-			padding: 5px 10px;
-			border: 1px solid #673AB8;
-			border-radius: 3px;
-			font-size: 100%;
-		}
-		button {
-			background: #673AB8;
-			color: #FFF;
-		}
-	}
-
-	.home-section {
-		position: relative;
-		margin: 60px auto;
-		max-width: 984px;
-		min-height: 230px;
-		overflow: hidden;
-		padding: 0 20px 0 265px;
-
-		@media (min-width: 1024px) {
-			font-size: 16px;
-		}
-
-		h2 {
-			font-size: 220%;
+		> div:last-child > h2 {
+			margin-bottom: 0;
+			font-size: 20px;
 			border-bottom: none;
+		}
+
+		pre {
+			margin: 10px 0;
+		}
+
+		> div {
+			float: none !important;
+			width: auto !important;
+		}
+	}
+}
+
+.home-button {
+	display: inline-block;
+	min-width: 12em;
+	padding: 0.5em 0.9em;
+	background: #eee !important;
+	box-shadow: 0 2px 0 rgba(@color-brand, 0.3);
+	border: none;
+	border-radius: 4px;
+	color: var(--color-home-btn) !important;
+	font-weight: bold;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	& + .home-button-sep + .home-button {
+		@media (max-width: 600px) {
+			margin-top: 1.3rem;
+		}
+	}
+}
+
+.home-button-sep {
+	@media (max-width: 600px) {
+		display: none;
+	}
+}
+
+@break-s: ~'(min-width: 700px)';
+
+// Styles for a typical media/flag layout where you have one image on the left
+// or right and text in the other column.
+.home-section {
+	display: flex;
+	flex-direction: column;
+	max-width: @home-width !important; // TODO: Fix markup page styles
+
+	@media @break-s {
+		flex-direction: row;
+	}
+
+	& + .home-section {
+		margin: 1.6rem 0;
+
+		@media @break-s {
+			margin: 3.75rem 0;
+		}
+	}
+
+	// The following nodes are created inside the markdown files.
+	// To make the authoring experience easier we select and style them
+	// based on the type instead of forcing content creators to add classes.
+	h2 {
+		font-size: 220%;
+		letter-spacing: 0.01em;
+		font-weight: 300;
+		text-align: center;
+		line-height: 1.2;
+		margin-bottom: 0.5em;
+
+		@media @break-s {
 			margin-top: 0;
-			letter-spacing: 0.01em;
-			font-weight: 300;
+			text-align: left;
 		}
+	}
 
-		h2, p, ul {
-			overflow: hidden;
-			margin-left: 0;
+	// TODO: Inline SVGs instead of using images to allow more styling options
+	// via CSS. We could play with subtle gradients for the stroke-color, etc.
+	img {
+		display: block;
+		width: 25%;
+		align-self: center;
+		max-height: 13rem; // IE11 fix
+
+		@media @break-s {
+			width: 100%;
+			flex: 22% 0 0;
+			margin-right: 4%;
 		}
+	}
 
-		img {
-			position: absolute;
-			left: 0;
-			top: 50%;
-			width: 250px;
-			height: 250px;
-			margin: -125px 0 0;
-			font-size: 124px;
-			text-align: center;
-		}
-
-		&:nth-of-type(2n+1) {
-			padding: 0 265px 0 20px;
+	@media @break-s {
+		// Variant: Right aligned image
+		&:nth-of-type(2n + 1) {
+			flex-direction: row-reverse;
 
 			img {
-				left: auto;
-				right: 0;
-			}
-		}
-
-		@media (max-width: 700px) {
-			padding: 0 20px 0 134px;
-
-			&:nth-of-type(2n+1) {
-				padding: 0 134px 0 20px;
-			}
-
-			img {
-				margin: -64px 0 0;
-				width: 128px;
-				height: 128px;
-			}
-		}
-
-		@media (max-width: 572px) {
-			margin: 30px 0;
-			padding: 0 20px !important;
-
-			h2 {
-				text-align: center;
-			}
-
-			img {
-				display: block;
-				position: relative;
-				top: 0;
-				margin: 10px auto;
+				margin-right: 0;
+				margin-left: 4%;
 			}
 		}
 	}

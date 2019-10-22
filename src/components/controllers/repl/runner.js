@@ -1,26 +1,12 @@
-import { h, Component, render } from 'preact';
+import { h, Component, render, hydrate } from 'preact';
 import { debounce, memoize } from 'decko';
-import Worker from 'worker!./worker';
-import regeneratorRuntime from 'babel-runtime/regenerator';
+import ReplWorker from 'workerize-loader?name=repl.[hash:5]!./repl.worker';
+import { patchErrorLocation } from './errors';
 
 let cachedFetcher = memoize(fetch);
-let cachedFetch = (...args) => cachedFetcher(...args).then( r => r.clone() );
+let cachedFetch = (...args) => cachedFetcher(...args).then(r => r.clone());
 
-const Empty = () => null;
-
-let count = 0;
-const worker = new Worker();
-worker.call = (method, ...params) => new Promise( (resolve, reject) => {
-	let id = ++count,
-		msg;
-	worker.addEventListener('message', msg = ({ data }) => {
-		if (data.id!==id) return;
-		worker.removeEventListener('message', msg);
-		if (data.error) reject(data.error);
-		resolve(...[].concat(data.result));
-	});
-	worker.postMessage({ id, method, params });
-});
+const worker = new ReplWorker();
 
 export default class Runner extends Component {
 	static worker = worker;
@@ -34,52 +20,98 @@ export default class Runner extends Component {
 	}
 
 	componentWillReceiveProps({ code }) {
-		if (code!==this.props.code) this.run();
+		if (code !== this.props.code) this.run();
 	}
 
 	run = debounce(1000, () => {
 		let { code, onSuccess, onError } = this.props;
 
-		code = code.replace(/^(\r|\n|\s)*import(?:\s.+?from\s+)?(['"])(.+?)\2\s*\;\s*(\r|\n)/g, (s, pre, q, lib) => {
-			console.info(`Skipping import "${lib}": imports not supported.`);
-			return pre || '';
-		});
-
-		worker.call('transform', code)
-			.then( transpiled => this.execute(transpiled) )
-			.then( onSuccess )
-			.catch( ({ message, ...props }) => {
-				let error = new Error(message);
-				for (let i in props) if (props.hasOwnProperty(i)) error[i] = props[i];
+		worker
+			.process(code, {})
+			.then(transpiled => this.execute(transpiled))
+			.then(onSuccess)
+			.catch(error => {
+				patchErrorLocation(error);
 				if (onError) onError({ error });
 			});
 	});
 
-	execute(transpiled) {
-		let { onError, onSuccess } = this.props,
-			module = { exports: {} },
-			fn, vnode;
+	execute(transpiled, isFallback) {
+		const PREACT = {
+			...require('preact'),
+			render: (v, a, b) => {
+				if (!vnode) vnode = v;
+				else if (this.base.contains(a)) {
+					return render(v, a, b);
+				}
+			},
+			hydrate: (v, a) => {
+				if (!vnode) vnode = v;
+				else if (this.base.contains(a)) {
+					return hydrate(v, a);
+				}
+			}
+		};
 
-		this.root = render(<Empty />, this.base, this.root);
-		this.base.innerHTML = '';
+		let module = { exports: {} },
+			modules = {
+				preact: () => PREACT,
+				'preact/hooks': () => require('preact/hooks'),
+				'preact/debug': () => require('preact/debug'),
+				'preact/compat': () => require('preact/compat'),
+				react: () => require('preact/compat'),
+				'react-dom': () => require('preact/compat'),
+				htm: () => require('htm')
+				// unistore: require('unistore'),
+				// 'unistore/preact': require('unistore/preact')
+			},
+			moduleCache = {},
+			fn,
+			vnode;
 
-		try {
-			fn = eval(transpiled);  // eslint-disable-line
-			fn(h, Component, v => vnode=v, module, module.exports, regeneratorRuntime, cachedFetch);
-		} catch (error) {
-			if (onError) onError({ error });
-			return;
+		function _require(id) {
+			// flatten unpkg
+			if (typeof id === 'string')
+				id = id.replace(/^(https?:)?\/\/unpkg\.com\//, '');
+			if (id in moduleCache) {
+				return moduleCache[id];
+			}
+			if (id in modules) {
+				return (moduleCache[id] = modules[id]());
+			}
+			throw Error(`No module found for ${id}`);
 		}
 
-		let exported = module.exports && (module.exports.default || module.exports[Object.keys(module.exports)[0]] || module.exports);
-		if (!vnode && typeof exported==='function') {
+		if (isFallback === true) {
+			this.root = render(null, this.base);
+			this.base.innerHTML = '';
+		}
+
+		try {
+			fn = eval(transpiled); // eslint-disable-line
+			fn(module, module.exports, _require, cachedFetch);
+		} catch (error) {
+			// try once more without DOM reuse:
+			if (isFallback !== true) {
+				return this.execute(transpiled, true);
+			}
+			patchErrorLocation(error);
+			throw error;
+		}
+
+		let exported =
+			module.exports &&
+			(module.exports.default ||
+				module.exports[Object.keys(module.exports)[0]] ||
+				module.exports);
+		if (!vnode && typeof exported === 'function') {
 			vnode = h(exported);
 		}
 		if (vnode) {
 			try {
-				this.root = render(vnode, this.base, this.root);
+				this.root = render(vnode, this.base);
 			} catch (error) {
-				error.message = `[render] ${error.message}`;
+				patchErrorLocation(error);
 				throw error;
 			}
 		}

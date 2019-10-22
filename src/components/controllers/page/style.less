@@ -2,23 +2,26 @@
 
 .page {
 	position: relative;
-	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
 
 	:global .markup {
-		padding: 50px 0;
-		overflow: visible;
+		// Necessary to prevent the background stripes of
+		// jumpotron/hero to affect the scrolling area.
+		overflow: hidden;
+		margin-bottom: 4rem;
 
 		& > *,
-		.full-width > *,
-		pre.highlight > code {
+		.full-width > * {
 			padding-left: 20px;
 			padding-right: 20px;
 			margin-left: auto;
 			margin-right: auto;
-			max-width: 800px;
+			max-width: @content-width;
 		}
 
-		& > ul, & > ol {
+		& > ul,
+		& > ol {
 			padding-left: 50px;
 		}
 
@@ -26,131 +29,69 @@
 			max-width: none;
 			width: 100%;
 		}
-		pre.highlight {
-			border-radius: 0;
-			padding: 20px 0;
-		}
 	}
+}
 
-	.toc {
-		display: inline-block;
-		position: fixed;
-		right: -5px;
-		top: @header-height + 10px;
-		transform: translateX(100%);
-		opacity: 0.8;
-		z-index: 100;
-		transition: all 250ms ease;
-		outline: none;
+.title {
+	margin: 1rem auto 0 auto;
+	padding: 0.5em;
+	font-size: 3.6rem;
+	font-weight: 200;
+	text-align: center;
+	line-height: 1.2;
+	max-width: @content-width;
 
-		&.disabled {
-			display: none;
-		}
-
-		.toggle {
-			position: absolute;
-			left: -45px;
-			top: 10px;
-			width: 48px;
-			height: 40px;
-			background: #FAFAFA;
-			box-shadow: 0 1px 6px rgba(0,0,0,0.3);
-			border: none;
-			border-radius: 3px;
-			font-size: 20px;
-			line-height: 40px;
-			text-align: left;
-			text-indent: 12px;
-			color: #FFF;
-			cursor: pointer;
-			z-index: 1;
-
-			&:hover {
-				background: #FFF;
-			}
-		}
-
-		&[open] {
-			transform: skew(0,0);
-			opacity: 1;
-		}
-
-		nav {
-			position: relative;
-			padding: 20px;
-			background: #fff;
-			box-shadow: 0 2px 7px rgba(0,0,0,0.3);
-			border-radius: 2px;
-			overflow: hidden;
-			z-index: 2;
-
-			a {
-				display: block;
-				border: none;
-
-				&:hover {
-					text-decoration: underline;
-				}
-			}
-		}
-	}
-
-	.loading {
-		position: fixed;
-		display: none;
-		left: 50%;
-		top: 50%;
-		width: 200px;
-		margin: -40px 0 0 -100px;
-		text-align: center;
-
-		animation: fadeIn 400ms ease forwards 1 100ms;
-		@keyframes fadeIn {
-			from { opacity:0; }
-		}
-
-		progress-spinner {
-			font-size: 30px;
-		}
-	}
-
-	.title {
-		margin: 0 -1em;
-		padding: .5em;
-		background: #22262e;
-		color: #f2777a;
-		text-shadow: 0 0 2px rgba(0,0,0,0.7);
-		font-size: 3em;
-		font-weight: 200;
-		box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
-		text-align: center;
-	}
-	
 	@media (max-width: 600px) {
-		.title {
-			font-size: 2em;
+		font-size: 2em;
+		margin-top: 2rem;
+	}
+}
+
+.inner {
+	position: relative;
+	min-height: 200px;
+	width: 100%;
+	background: var(--color-page-bg);
+}
+
+.withEdit {
+	margin-top: 2rem;
+}
+
+.outer {
+	display: flex;
+}
+
+.sidebarWrap {
+	display: none;
+}
+
+.withSidebar {
+	.sidebarWrap {
+		display: flex;
+	}
+
+	@media @sidebar-break {
+		background: var(--color-sidebar-bg);
+
+		.outer {
+			margin-left: auto;
+			margin-right: auto;
+			max-width: @full-width;
 		}
-	}
 
-	.inner {
-		position: relative;
-		overflow: hidden;
-		min-height: 200px;
-	}
-
-	& > h1,
-	.inner {
-		transition: opacity 80ms ease 30ms;
-	}
-
-	&[loading] {
-		.loading {
-			display: block;
-		}
-		& > h1,
 		.inner {
-			opacity: 0;
-			transition: none;
+			flex-shrink: 1;
+			flex-grow: 1;
+			flex-basis: auto;
+			max-width: calc(100% - 20rem);
 		}
 	}
+}
+
+.contentWrapper {
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+	min-height: calc(100vh - 12rem);
 }

@@ -1,35 +1,43 @@
-import { h, Component } from 'preact';
+import { createRef, Component } from 'preact';
 import style from './style';
 import config from '../../config';
+import { lazily, cancelLazily } from '../../lib/lazily';
 
-let docsearchInstance, input;
+let docsearchInstance;
 
 export default class Search extends Component {
 	id = 'docsearch-input';
 
-	load = () => this.timer = setTimeout(() => {
-		if (window.docsearch) return;
+	input = createRef();
 
-		let head = document.head || document.querySelector('head');
+	load = () => {
+		this.lazy = lazily(() => {
+			if (window.docsearch) return;
 
-		let link = document.createElement('link');
-		link.rel = 'stylesheet';
-		link.href = '//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css';
-		head.appendChild(link);
+			let head = document.head || document.querySelector('head');
 
-		let script = document.createElement('script');
-		script.src = '//cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js';
-		script.onload = script.onerror = this.loaded;
-		head.appendChild(script);
-	}, 2000);
+			let link = document.createElement('link');
+			link.rel = 'stylesheet';
+			link.href = 'https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css';
+			head.appendChild(link);
+
+			let script = document.createElement('script');
+			script.async = true;
+			script.src = 'https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js';
+			script.onload = script.onerror = this.loaded;
+			head.appendChild(script);
+		});
+	};
 
 	loaded = () => {
-		let docsearch = typeof window!=='undefined' && window.docsearch;
+		let docsearch = window.docsearch;
 		if (docsearch && !docsearchInstance) {
-			docsearchInstance = docsearch({
-				apiKey: config.docsearch.apiKey,
-				indexName: config.docsearch.indexName,
-				inputSelector: `#${this.id}`
+			this.lazy = lazily(() => {
+				docsearchInstance = docsearch({
+					apiKey: config.docsearch.apiKey,
+					indexName: config.docsearch.indexName,
+					inputSelector: this.input.current
+				});
 			});
 		}
 	};
@@ -39,30 +47,27 @@ export default class Search extends Component {
 	}
 
 	componentDidMount() {
-		input = input || document.getElementById(this.id);
-
-		if (!input) {
-			input = document.createElement('input');
-			input.required = true;
-			input.id = this.id;
-			input.className = style.searchBox;
-			this.base.appendChild(input);
-
-			if (/loaded|complete/.test(document.readyState)) {
-				this.load();
-			}
-			else {
-				addEventListener('load', this.load);
-			}
+		if (!docsearchInstance) {
+			this.load();
 		}
 	}
 
 	componentWillUnmount() {
-		clearTimeout(this.timer);
-		if (input && input.parentNode) input.parentNode.removeChild(input);
+		cancelLazily(this.lazy);
 	}
 
 	render() {
-		return <div class={style.search} />;
+		return (
+			<div class={style.search}>
+				<label aria-label="Search">
+					<input
+						ref={this.input}
+						id={this.id}
+						class={style.searchBox}
+						required
+					/>
+				</label>
+			</div>
+		);
 	}
 }
