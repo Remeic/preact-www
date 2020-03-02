@@ -34,7 +34,7 @@ class MyComponent extends Component {
 }
 ```
 
-To learn more about components and how they can be used, head over to the [Components](guide/v10/components) page.
+To learn more about components and how they can be used, head over to the [Components](/guide/v10/components) page.
 
 ## render()
 
@@ -44,7 +44,7 @@ Render a Preact component into the `containerNode` DOM node. Does not return any
 
 If the optional `replaceNode` DOM node is provided and is a child of `containerNode`, Preact will update or replace that element using its diffing algorithm.
 
-```js
+```jsx
 import { render } from 'preact';
 
 const Foo = () => <div>foo</div>;
@@ -100,10 +100,10 @@ render(<App />, rootElement)
 When you have a prerendered DOM, there is no need to re-render it again. With hydrate most of the diffing phase will be skipped with event listeners being the exception. It's mainly used in conjuncton with [Server-Side Rendering](/guide/v10/server-side-rendering).
 
 ```jsx
-import { render } from 'preact';
+import { hydrate } from 'preact';
 
 const Foo = () => <div>foo</div>;
-hydrate(<Foo />, document.getElementById('container));
+hydrate(<Foo />, document.getElementById('container'));
 ```
 
 ## h() / createElement()
