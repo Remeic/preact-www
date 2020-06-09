@@ -11,7 +11,7 @@ This guide walks through building a simple "ticking clock" component. More detai
 
 ---
 
-<toc></toc>
+<div><toc></toc></div>
 
 ---
 
@@ -131,7 +131,10 @@ class App extends Component {
   }
 
   // Add a submit handler that updates the `name` with the latest input value
-  onSubmit = () => {
+  onSubmit = ev => {
+    // Prevent default browser behavior (aka don't submit the form here)
+    ev.preventDefault();
+
     this.setState({ name: this.state.value });
   }
 
