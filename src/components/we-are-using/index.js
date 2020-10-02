@@ -89,6 +89,11 @@ const companies = [
 		logo: 'algolia.png'
 	},
 	{
+		name: 'Songwhip',
+		href: 'https://songwhip.com/',
+		logo: 'songwhip.svg'
+	},
+	{
 		name: 'Native Instruments',
 		href: 'https://native-instruments.com/',
 		logo: 'native-instruments.png'
@@ -234,19 +239,14 @@ const companies = [
 		logo: 'bodybuildingcom.svg'
 	},
 	{
-		name: 'SwissDev Jobs',
-		href: 'https://swissdevjobs.ch/jobs/Python/All',
-		logo: 'swissdevjobs.png'
-	},
-	{
 		name: 'Doxford Pet Software',
 		href: 'https://doxford.net',
 		logo: 'doxford.png'
 	},
 	{
-		name: 'Aarogya Setu',
-		href: 'https://www.aarogyasetu.gov.in/',
-		logo: 'aarogyasetu.svg'
+		name: 'SmartRate',
+		href: 'https://www.smartrate.se',
+		logo: 'smartrate.png'
 	}
 ];
 

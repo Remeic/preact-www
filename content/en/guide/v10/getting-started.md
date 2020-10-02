@@ -48,12 +48,19 @@ Writing raw `h` or `createElement` calls can be tedious. JSX has the advantage o
   // Initialize htm with Preact
   const html = htm.bind(h);
 
-  const app = html`<h1>Hello World!</h1>`;
-  render(app, document.body);
+  function App (props) {
+    return html`<h1>Hello ${props.name}!</h1>`;
+  }
+
+  render(html`<${App} name="World" />`, document.body);
 </script>
 ```
 
 [🔨 Edit on Glitch](https://glitch.com/~preact-with-htm)
+
+> **Tip:** HTM also provides a convenient single-import Preact version:
+>
+> `import { html, render } from 'https://unpkg.com/htm/preact/index.mjs?module'`
 
 For more information on HTM, check out its [documentation][htm].
 
@@ -67,7 +74,7 @@ As the name implies, Preact CLI is a **c**ommand-**li**ne tool that can be run i
 npm install -g preact-cli
 ```
 
-After that you'll have a new command in your terminal called `preact`. With it you can create a new application by running the `preact create` command:
+After that, you'll have a new command in your terminal called `preact`. Using it, you can create a new application by running the `preact create` command:
 
 ```bash
 preact create default my-project
@@ -96,15 +103,15 @@ Now you're ready to start coding your app!
 
 ### Making a production build
 
-There comes a time when you need to deploy your app somewhere. The CLI ships with a handy `build` command which will generate a highly optimized production build.
+There comes a time when you need to deploy your app somewhere. The CLI ships with a handy `build` command which will generate a highly-optimized production build.
 
 ```bash
 npm run build
 ```
 
-Upon completion you'll have a new `build/` folder which can be deployed directly to a server.
+Upon completion, you'll have a new `build/` folder which can be deployed directly to a server.
 
-> For a full list of all available commands check out the [Preact CLI Documentation](https://github.com/preactjs/preact-cli#cli-options).
+> For a full list of all available commands, check out the [Preact CLI Documentation](https://github.com/preactjs/preact-cli#cli-options).
 
 ## Integrating Into An Existing Pipeline
 
@@ -112,7 +119,7 @@ If you already have an existing tooling pipeline set up, it's very likely that t
 
 ### Setting up JSX
 
-To transpile JSX you need a babel plugin that converts it to valid JavaScript code. The one we all use is [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx). Once installed you need to specify the function for JSX that should be used:
+To transpile JSX, you need a Babel plugin that converts it to valid JavaScript code. The one we all use is [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx). Once installed, you need to specify the function for JSX that should be used:
 
 ```json
 {
@@ -125,16 +132,16 @@ To transpile JSX you need a babel plugin that converts it to valid JavaScript co
 }
 ```
 
-> [babeljs](https://babeljs.io/) has some of the best documentation out there. We highly recommend checking it out for questions surrounding babel and how to set it up.
+> [Babel](https://babeljs.io/) has some of the best documentation out there. We highly recommend checking it out for questions surrounding Babel and how to set it up.
 
 ### Aliasing React to Preact
 
-At some point you'll probably want to make use of the vast react ecosystem. Libraries and Components originally written for React work seamlessly with our compatibility layer. To make use of it we need to point all `react` and `react-dom` imports to Preact. This step is called aliasing.
+At some point, you'll probably want to make use of the vast React ecosystem. Libraries and Components originally written for React work seamlessly with our compatibility layer. To make use of it, we need to point all `react` and `react-dom` imports to Preact. This step is called _aliasing._
 
 #### Aliasing in webpack
 
-To alias any package in webpack you need to add the `resolve.alias` section
-to your config. Depending on the configuration you're using this section may
+To alias any package in webpack, you need to add the `resolve.alias` section
+to your config. Depending on the configuration you're using, this section may
 already be present, but missing the aliases for Preact.
 
 ```js
@@ -151,7 +158,7 @@ const config = {
 }
 ```
 
-#### Aliasing in parcel
+#### Aliasing in Parcel
 
 Parcel uses the standard `package.json` file to read configuration options under
 an `alias` key.
@@ -166,9 +173,9 @@ an `alias` key.
 }
 ```
 
-#### Aliasing in rollup
+#### Aliasing in Rollup
 
-To alias within rollup you'll need to install [@rollup/plugin-alias](https://github.com/rollup/plugins/tree/master/packages/alias).
+To alias within Rollup, you'll need to install [@rollup/plugin-alias](https://github.com/rollup/plugins/tree/master/packages/alias).
 The plugin will need to be placed before your [@rollup/plugin-node-resolve](https://github.com/rollup/plugins/tree/master/packages/node-resolve)
 
 ```js
@@ -186,11 +193,10 @@ module.exports = {
 };
 ```
 
-#### Aliasing in jest
+#### Aliasing in Jest
 
-Similar to bundlers, [jest](https://jestjs.io/) allows to rewrite module paths. The syntax is a bit
-different, than in say webpack, because it's based on regex. Add this to your
-jest configuration:
+[Jest](https://jestjs.io/) allows the rewriting of module paths similar to bundlers.
+These rewrites are configured using regular expressions in your Jest configuration:
 
 ```json
 {
@@ -205,11 +211,11 @@ jest configuration:
 [htm]: https://github.com/developit/htm
 [Preact CLI]: https://github.com/preactjs/preact-cli
 
-## Typescript preact/compat configuration
+## TypeScript preact/compat configuration
 
-Your project could need support for the wider react ecosystem.  To make your application
-compile you'll need to disable type checking on your node_modules like this.  This way 
-your alias will work properly when libraries import react.
+Your project could need support for the wider React ecosystem.  To make your application
+compile, you'll need to disable type checking on your `node_modules` like this.  This way,
+your alias will work properly when libraries import React.
 
 ```json
 {

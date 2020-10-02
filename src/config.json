@@ -11,10 +11,32 @@
 		"de": "German",
 		"it": "Italian"
 	},
-	"repo": "preactjs/preact",
+	"repo": "preact",
 	"docsearch": {
 		"apiKey": "2a2ff54c5bfa1eea173cdfbe8a0bcace",
 		"indexName": "preact"
+	},
+	"i18n": {
+		"next": {
+			"en": "Next Page",
+			"de": "Nächste Seite",
+			"fr": "Page Suivante",
+			"es": "Siguiente Página",
+			"tr": "Sonraki Sayfa",
+			"it": "Pagina Successiva",
+			"pt-br": "Próxima Página",
+			"zh": "下一页"
+		},
+		"previous": {
+			"en": "Previous Page",
+			"de": "Vorherige Seite",
+			"fr": "Page Précédente",
+			"es": "Pagina Anterior",
+			"tr": "Önceki Sayfa",
+			"it": "Pagina Precedente",
+			"pt-br": "Página Anterior",
+			"zh": "上一页"
+		}
 	},
 	"nav": [
 		{
@@ -309,6 +331,14 @@
 					}
 				},
 				{
+					"path": "/guide/v10/preact-testing-library",
+					"name": {
+						"en": "Preact Testing Library",
+						"pt-br": "Preact Testing Library",
+						"de": "Preact Testing Library"
+					}
+				},
+				{
 					"path": "/guide/v10/unit-testing-with-enzyme",
 					"name": {
 						"en": "Unit Testing with Enzyme",
@@ -378,7 +408,7 @@
 				{
 					"path": "/guide/v10/options",
 					"name": {
-						"en": "Options",
+						"en": "Option Hooks",
 						"de": "Optionen"
 					}
 				}

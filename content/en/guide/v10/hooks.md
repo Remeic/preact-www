@@ -103,13 +103,13 @@ function CounterB() {
 
 Note that both `CounterA` and `CounterB` are completely independent of each other. They both use the `useCounter()` custom hook, but each has its own instance of that hook's associated state.
 
-> Thinking this looks a strange? You're not alone!
+> Thinking this looks a little strange? You're not alone!
 >
 > It took many of us a while to grow accustomed to this approach.
 
 ## The dependency argument
 
-Many hooks accept an argument that can be used to limit when a hook should be updated. Preact inspects each value in a dependency array and checks to see if it has changed since the last time a hook was called.
+Many hooks accept an argument that can be used to limit when a hook should be updated. Preact inspects each value in a dependency array and checks to see if it has changed since the last time a hook was called. When the dependency argument is not specified, the hook is always executed.
 
 In our `useCounter()` implementation above, we passed an array of dependencies to `useCallback()`:
 

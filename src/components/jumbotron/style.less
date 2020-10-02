@@ -12,6 +12,7 @@
 	h1 {
 		color: #fff;
 		text-transform: uppercase;
+		pointer-events: none;
 
 		@media @sidebar-break {
 			padding: 1.5rem 0 0 0 !important;
@@ -24,7 +25,7 @@
 		}
 	}
 
-	+ :global(pre.highlight) {
+	+ :global(div.highlight-container) {
 		margin-left: 1rem;
 		margin-right: 1rem;
 		box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
