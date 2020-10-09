@@ -31,16 +31,20 @@ toc: false
 <section class="home-section">
     <img src="/assets/home/metal.svg" alt="metal">
 
-    <h2>Più vicino alla macchina</h2>
+    <h2>Più vicino al DOM</h2>
     
     <p>
         Preact fornisce la più leggera astrazione possibile del Virtual DOM.
-        Il web è una piattaforma stabile, è giunto il momento in cui dobbiamo smettere di reimplementarlo in nome della sicurezza.
+        Costruito sulle già stabili funzionalità della piattaforma, registra dei reali gestori di eventi e funziona bene con le altre librerie.
     </p>
 
     <p>
        Preact è in prima linea nella piattaforma Web. Compara il virtual DOM con il DOM stesso,
        registra i gestori di eventi, ed è compatibile, senza grossi problemi, con altre librerie.
+    </p>
+
+    <p>
+      Preact può essere usato direttamente nel browser, senza bisogno di transpilazione.
     </p>
 </section>
 
@@ -57,7 +61,7 @@ toc: false
 
     <p>
         Questo significa meno Javascript da scaricare, analizzare ed eseguire - lasciando più tempo per il tuo codice,
-        così che tu possa costruire un'esperienza da te definita, senza dover combattere per tenere il framework sotto controllo.
+        così che tu possa costruire l'esperienza da te definita, senza dover combattere per tenere il framework sotto controllo.
     </p>
 </section>
 
@@ -68,11 +72,12 @@ toc: false
     <h2>Grandi Perfomance</h2>
     
     <p>
-        Preact è veloce, e non solo per il suo peso. Ha una delle implementazioni più veloci per rilevare le differenze tra il DOM sulla pagina e il DOM virtuale.
+        Preact è veloce, e non solo per il suo peso. È una delle più veloci librerie del Virtual DOM in circolazione, grazie al suo semplice e prevedibile algoritmo per rilevare le differenze.
     </p>
     
     <p>
-        Include anche funzionalità aggiuntive per le prestazoni, come l'aggiornamento personalizzabile dei batch, un opzionale e asincrono rendering e DOM riutilizzabile.
+        Eseguiamo degli aggiornamenti in gruppo automaticamente e ottimizziamo Preact all'estremo quando si tratta di performance.
+        Inoltre lavoriamo a stretto contatto con gli ingegnieri che sviluppano i browser per ottenere sempre le massime prestazioni possibili da Preact.
     </p>
 </section>
 
@@ -83,7 +88,7 @@ toc: false
     <h2>Portatile ed Integrabile</h2>
     
     <p>
-        La minuscola impronta di Preact permette di usare il potente paradigma dei Componenti del Virtual DOM in posti dove altrimenti non avresti potuto.
+        Il piccolissimo peso di Preact permette di usare il paradigma dei componenti e del Virtual DOM anche nei luoghi dove altriementi non avresti potuto.
     </p>
     
     <p>
@@ -112,15 +117,15 @@ toc: false
 <section class="home-section">
     <img src="/assets/home/compatible.svg" alt="compatible">
 
-    <h2>Compatibile con l'Ecosistema</h2>
+    <h2>Ecosistema Compatibile</h2>
     
     <p>
-        I componenti DOM virtuali facilitano la condivisione di cose riutilizzabili - qualsiasi cosa dai bottoni ai fornitori di dati.
+        I componenti DOM virtuali facilitano la condivisione di codice riutilizzabile - qualsiasi cosa dai bottoni ai fornitori di dati.
         Il design di Preact ti permette di utilizzare senza problemi migliaia di componenti disponibili nell'ecosistema React.
     </p>
     
     <p>
-        La semplice aggiunta dell'alias <a href="/guide/switching-to-preact#how-to-alias-preact-compat">preact-compat</a> al tuo bundler fornisce un livello di compatibilità che permette anche al più complesso componente React di essere utilizzato nella tua applicaizone.
+        La semplice aggiunta dell'alias <a href="/guide/v10/switching-to-preact#how-to-alias-preact-compat">preact/compat</a> al tuo bundler fornisce un livello di compatibilità che permette anche ai componenti React più complicati di essere usati nella tua applicazione
     </p>
 </section>
 
@@ -216,7 +221,7 @@ render(
 
 
 <section class="home-top">
-    <h1>Pronto a tuffarti?</h1>
+    <h1>Pronto a partire?</h1>
 </section>
 
 
@@ -227,13 +232,7 @@ render(
         Scegli la guida migliore per te!
     </p>
     <p>
-<<<<<<< HEAD
-        <a href="/guide/getting-started" class="home-button">Primi passi</a>
-        <span class="home-button-sep">&nbsp; • &nbsp;</span>
-        <a href="/guide/switching-to-preact" class="home-button">Passa a Preact</a>
-=======
         <a href="/guide/v10/getting-started" class="btn primary">Primi passi</a>
         <a href="/guide/v10/switching-to-preact" class="btn secondary">Passa a Preact</a>
->>>>>>> master
     </p>
 </section>

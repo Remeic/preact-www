@@ -15,6 +15,7 @@ In questa guida vedremo come creare un semplice componente "Orologio". Informazi
 
 ---
 
+
 ## Importa ciò che ti serve
 Il modulo `preact` fornisce sia esportazioni  `named` sia `default`, così puoi importare tutto sotto il namespace o solo quello di cui hai bisogno come variabili locali: 
 
@@ -89,7 +90,7 @@ Al posto di dichiarare il pragma di `@jsx` nel tuo codice, il metodo migliore è
 
 ## Interpretare  il JSX
 
-Pronto per l'uso, Preact fornisce una funzione `h()` che converte il tuo JSX come elementi del Virtual DOM _([Vedi come fa nel dettaglio](http://jasonformat.com/wtf-is-jsx))_. Preact fornisce anche una funzione chiamata `render()` che crea un albero DOM partendo dal Virtual DOM citato precedentemente.
+Pronto all'uso, Preact fornisce una funzione `h()` che converte il tuo JSX come elementi del Virtual DOM _([Vedi come fa nel dettaglio](http://jasonformat.com/wtf-is-jsx))_. Preact fornisce anche una funzione chiamata `render()` che crea un albero DOM partendo dal Virtual DOM citato precedentemente.
 
 Per Interpretare JSX basta solamente importare queste due funzioni e usarle in questo modo:
 
